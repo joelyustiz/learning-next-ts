@@ -73,6 +73,16 @@ export const getProducts = `
   }
 `
 
+export const getProductsLast = `
+  query getProducts {
+    products (first: 15, sortKey: TITLE) {
+      edges {
+        node ${productSchema}
+      }
+    }
+  }
+`
+
 export const getCollectionsList = `
   query getCollections {
     collections(first: 20) {

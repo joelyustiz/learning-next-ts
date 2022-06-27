@@ -1,34 +1,104 @@
+import { SetStateAction, useEffect, useMemo, useState } from 'react'
 import type { NextPage, GetStaticPropsContext } from 'next'
+import {
+  gql,
+  useQuery,
+  NetworkStatus
+} from '@apollo/client'
 import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link'
+
 import styles from '../styles/Home.module.css'
-import { getProducts } from '../graphql/queries'
+import { getProducts, getProductsLast, productSchema } from '../graphql/queries'
+import io from 'socket.io-client'
+import { DefaultEventsMap } from '@socket.io/component-emitter'
+import { initializeApollo, addApolloState } from '../lib/apolloClient'
 
-export async function getStaticProps(Context: GetStaticPropsContext) {
-  const variables = {}
-  const response = await fetch(`${process.env.SHOPIFY_STOREFRONT_URL}`,{
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'X-Shopify-Storefront-Access-Token': `${process.env.SHOPIFY_STOREFRONT_ACCESS_TOKEN}`
-    },
-    body: JSON.stringify({ query: getProducts, variables })
-  })
-  const json = await response.json()
-
-  const data = json.data.products.edges.map((item: { node: any }) => {
-    return item.node
-  })
-
-  return (
-    {
-      props: { products: data }
+let socket: any
+const query = gql`
+  query getProducts {
+    products (first: 5) {
+      edges {
+        node ${productSchema}
+      }
     }
-  )
+  }
+`
+export async function getStaticProps(Context: GetStaticPropsContext) {
+  const apolloClient = initializeApollo()
+  await apolloClient.query({
+    query,
+    variables: {},
+  })
+
+  return addApolloState(apolloClient, {
+    props: {},
+    revalidate: 1,
+  })
+
 }
 
 const Home: NextPage = (props: any) => {
+
+  const { loading, error, data, fetchMore, networkStatus } = useQuery(
+    query,
+    {
+      variables: {},
+      notifyOnNetworkStatusChange: true,
+    }
+  )
+
+  const [products, setProducts] = useState(Array.isArray(props.products) ? props.products : [])
+  const [input, setInput] = useState<string>('')
+
+  const onChangeHandler = (e: { target: { value: SetStateAction<string> } }) => {
+    setInput(e.target.value)
+    socket.emit('input-change', e.target.value)
+  }
+
+  const socketInitializer = async () => {
+    await fetch('/api/socket')
+    socket = io()
+
+    socket.on('connect', () => {
+      console.log('socketInitializer connected')
+    })
+
+    socket.on('update-input', (msg:string) => {
+      setInput(msg)
+    })
+
+    socket.on('refresh', (value: boolean) => {
+      refreshProducts()
+    })
+  }
+
+  const refreshProducts = async () => {
+    const variables = {}
+    const response = await fetch(`${process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_URL}`,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': `${process.env.NEXT_PUBLIC_SHOPIFY_STOREFRONT_ACCESS_TOKEN}`
+      },
+      body: JSON.stringify({ query: getProductsLast, variables })
+    })
+    const json = await response.json()
+
+    const data = json.data.products.edges.map((item: { node: any }) => {
+      return item.node
+    })
+    setProducts(data)
+  }
+
+  useEffect(() => {
+    socketInitializer()
+  }, [])
+
+  if (error) return <h1>Error loading posts.</h1>
+  if (loading) return <h1>Loading</h1>
+
   return (
     <div className={styles.container}>
       <Head>
@@ -38,6 +108,16 @@ const Home: NextPage = (props: any) => {
       </Head>
 
       <main className={styles.main}>
+        <input
+          placeholder="Type something"
+          value={input}
+          onChange={onChangeHandler}
+        />
+        <button onClick={() => {
+          socket.emit('refresh')
+        }}>
+          recargar productos
+        </button>
         <h1 className={styles.title}>
           BeerHouse
         </h1>
@@ -48,7 +128,7 @@ const Home: NextPage = (props: any) => {
         </p>
 
         <div className={styles.grid}>
-         {props.products.map((product: any) => {
+         {data.products.edges.map(({ node : product }: any) => {
            return (
             <div key={product.id}>
               <Link href={`/product/${product.handle}`}>
