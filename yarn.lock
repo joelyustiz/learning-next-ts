@@ -325,6 +325,56 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@prismicio/client@^6.4.3", "@prismicio/client@^6.6.1":
+  version "6.6.1"
+  resolved "https://registry.yarnpkg.com/@prismicio/client/-/client-6.6.1.tgz#087547a7d3283906a0d4cf7ea417e756fdc9b8eb"
+  integrity sha512-Jq/s9fC8pz49f68dk6gMNFqDItPg7Ka8PO0D9dTzibx83+GKha+y0clqaygxPWlgE8csc9Yk/KS6N8AvesnTVA==
+  dependencies:
+    "@prismicio/helpers" "^2.3.1"
+    "@prismicio/types" "^0.1.29"
+
+"@prismicio/helpers@^2.3.0", "@prismicio/helpers@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/@prismicio/helpers/-/helpers-2.3.1.tgz#e6d36a95ca9b0c1340322e6ae1830fc072f02742"
+  integrity sha512-J37WpIUINZ0wT3a2h4fc9ATZqjmQjziPwjETG7QLYEVULpQXsWbgM+C6aoOqdlRwCbZ3Wfhel26+++ZaqOX/0Q==
+  dependencies:
+    "@prismicio/richtext" "^2.0.1"
+    "@prismicio/types" "^0.1.27"
+    escape-html "^1.0.3"
+    imgix-url-builder "^0.0.3"
+
+"@prismicio/next@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@prismicio/next/-/next-0.1.3.tgz#4505e7e8554ac3151742fbab08b8675c994e67c7"
+  integrity sha512-93Etxcn5Fd/hs5pREuu753M9k3Xe8qjd9ZcTyhq++vvfKadPP+iQdoP1gZD2kNlRaP1cUk3ms/NigqHfpXkn6w==
+  dependencies:
+    "@prismicio/client" "^6.4.3"
+    "@prismicio/helpers" "^2.3.0"
+    "@prismicio/react" "^2.4.0"
+    "@prismicio/types" "^0.1.27"
+    eslint-plugin-react "^7.30.0"
+    eslint-plugin-react-hooks "^4.5.0"
+
+"@prismicio/react@^2.4.0":
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/@prismicio/react/-/react-2.4.2.tgz#581a16f1b682e530fe99a7caad3f47353bd527b8"
+  integrity sha512-KyCZBdJosE93S7sl+Z//eDdbT7vYNGNZ60rOs1VETbDXJtJhh7ymSZul5cvb8MrSrH8yn9DiR4rGVVXLobnHSA==
+  dependencies:
+    "@prismicio/helpers" "^2.3.1"
+    "@prismicio/richtext" "^2.0.1"
+
+"@prismicio/richtext@^2.0.1":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@prismicio/richtext/-/richtext-2.1.0.tgz#b17a5ea0eccb9ac0ac9229416462da78a986ca53"
+  integrity sha512-uxJaR3soPr356stoLEIcgn+68lfolwxRmlDLTF4gYDcF30rB0YFLPcdRJmhtkU6LGZXIhwUUmwMWXkhT+DV3hA==
+  dependencies:
+    "@prismicio/types" "^0.1.22"
+
+"@prismicio/types@^0.1.22", "@prismicio/types@^0.1.27", "@prismicio/types@^0.1.29":
+  version "0.1.29"
+  resolved "https://registry.yarnpkg.com/@prismicio/types/-/types-0.1.29.tgz#52914a5ba304c8b75fdcf398e5014ac4364fdffb"
+  integrity sha512-wp7DHqMK0FDMcFQfJbqTAzWNBkM6/rRq71jMw6x9m07nWCUqytJQQKg6/15uduIeSqPXmyfJW21drsmChGaxsQ==
+
 "@rushstack/eslint-patch@^1.1.3":
   version "1.1.3"
   resolved "https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.1.3.tgz"
@@ -959,6 +1009,11 @@ es-to-primitive@^1.2.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
+escape-html@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/escape-html/-/escape-html-1.0.3.tgz#0258eae4d3d0c0974de1c169188ef0051d1d1988"
+  integrity sha512-NiSupZ4OeuGwr68lGIeym/ksIZMJodUGOSCZ/FSnTxcrekbvqrgdUxlJOMpijaKZVjAJrWrGs/6Jy8OMuyj9ow==
+
 escape-string-regexp@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/escape-string-regexp/-/escape-string-regexp-1.0.5.tgz#1b61c0562190a8dff6ae3bb2cf0200ca130b86d4"
@@ -1057,6 +1112,26 @@ eslint-plugin-react@^7.29.4:
   version "7.30.0"
   resolved "https://registry.npmjs.org/eslint-plugin-react/-/eslint-plugin-react-7.30.0.tgz"
   integrity sha512-RgwH7hjW48BleKsYyHK5vUAvxtE9SMPDKmcPRQgtRCYaZA0XQPt5FSkrU3nhz5ifzMZcA8opwmRJ2cmOO8tr5A==
+  dependencies:
+    array-includes "^3.1.5"
+    array.prototype.flatmap "^1.3.0"
+    doctrine "^2.1.0"
+    estraverse "^5.3.0"
+    jsx-ast-utils "^2.4.1 || ^3.0.0"
+    minimatch "^3.1.2"
+    object.entries "^1.1.5"
+    object.fromentries "^2.0.5"
+    object.hasown "^1.1.1"
+    object.values "^1.1.5"
+    prop-types "^15.8.1"
+    resolve "^2.0.0-next.3"
+    semver "^6.3.0"
+    string.prototype.matchall "^4.0.7"
+
+eslint-plugin-react@^7.30.0:
+  version "7.30.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.30.1.tgz#2be4ab23ce09b5949c6631413ba64b2810fd3e22"
+  integrity sha512-NbEvI9jtqO46yJA3wcRF9Mo0lF9T/jhdHqhCHXiXtD+Zcb98812wvokjWpU7Q4QH5edo6dmqrukxVvWWXHlsUg==
   dependencies:
     array-includes "^3.1.5"
     array.prototype.flatmap "^1.3.0"
@@ -1432,6 +1507,11 @@ ignore@^5.2.0:
   version "5.2.0"
   resolved "https://registry.npmjs.org/ignore/-/ignore-5.2.0.tgz"
   integrity sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==
+
+imgix-url-builder@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/imgix-url-builder/-/imgix-url-builder-0.0.3.tgz#9f386de64cdd1363d352a7f6313fd7dacd8fb282"
+  integrity sha512-8Oc2Cn4+jF06sEfJcVPlWYfD2F6RjrwIMbk1xEzux8unoB5LsvFc/GL1BQ47HPaeE12ReX2nMUcjUslGYWLxHA==
 
 import-fresh@^3.0.0, import-fresh@^3.2.1:
   version "3.3.0"

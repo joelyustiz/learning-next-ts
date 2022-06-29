@@ -25,18 +25,36 @@ const query = gql`
     }
   }
 `
+
+const prismicQuery = gql`
+  query AllDocs {
+    allHomes {
+      edges {
+        node {
+          top_brands {
+            image
+            redirect_to
+          }
+        }
+      }
+    }
+  }
+`
+
 export async function getStaticProps(Context: GetStaticPropsContext) {
   const apolloClient = initializeApollo()
   await apolloClient.query({
     query,
     variables: {},
+    context: {
+      clientName: 'shopify-store-front'
+    }
   })
 
   return addApolloState(apolloClient, {
     props: {},
     revalidate: 1,
   })
-
 }
 
 const Home: NextPage = (props: any) => {
@@ -46,8 +64,21 @@ const Home: NextPage = (props: any) => {
     {
       variables: {},
       notifyOnNetworkStatusChange: true,
+      context: {
+        clientName: 'shopify-store-front'
+      }
     }
   )
+  const { loadingPrismic, errorPrismic, dataPrismic, fetchMorePrismic } = useQuery(
+    prismicQuery,
+    {
+      variables: {},
+      context: {
+        clientName: 'prismic'
+      }
+    }
+  )
+  console.log('dataPrismic', dataPrismic);
 
   const [products, setProducts] = useState(Array.isArray(props.products) ? props.products : [])
   const [input, setInput] = useState<string>('')
