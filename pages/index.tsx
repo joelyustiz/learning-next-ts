@@ -69,7 +69,7 @@ const Home: NextPage = (props: any) => {
       }
     }
   )
-  const { loadingPrismic, errorPrismic, dataPrismic, fetchMorePrismic } = useQuery(
+  const { data: dataPrismic} = useQuery(
     prismicQuery,
     {
       variables: {},
